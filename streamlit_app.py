@@ -86,7 +86,7 @@ def get_secret_or_input(secret_key, secret_name, info_link=None):
 def run():
     ready = True
 
-    openai_api_key = st.secrets["openai_api_key"]
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
 
     if ready:
         chain = get_chain(openai_api_key=openai_api_key)
