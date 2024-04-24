@@ -86,16 +86,7 @@ def get_secret_or_input(secret_key, secret_name, info_link=None):
 def run():
     ready = True
 
-    openai_api_key = st.session_state.get("OPENAI_API_KEY")
-
-    with st.sidebar:
-        if not openai_api_key:
-            openai_api_key = get_secret_or_input('OPENAI_API_KEY', "OpenAI API key",
-                                                 info_link="https://platform.openai.com/account/api-keys")
-
-    if not openai_api_key:
-        st.warning("Missing OPENAI_API_KEY")
-        ready = False
+    openai_api_key = st.secrets["db_username"]
 
     if ready:
         chain = get_chain(openai_api_key=openai_api_key)
