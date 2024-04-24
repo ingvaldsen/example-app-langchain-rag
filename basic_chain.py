@@ -14,8 +14,8 @@ ZEPHYR_ID = "HuggingFaceH4/zephyr-7b-beta"
 
 
 def get_model(repo_id=ZEPHYR_ID, **kwargs):
-    if repo_id == "ChatGPT":
-        chat_model = ChatOpenAI(temperature=0, **kwargs)
+    if repo_id == "OpenAI":
+        chat_model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, **kwargs)
     else:
         huggingfacehub_api_token = kwargs.get("HUGGINGFACEHUB_API_TOKEN", None)
         if not huggingfacehub_api_token:

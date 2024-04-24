@@ -12,7 +12,7 @@ from rag_chain import make_rag_chain
 
 
 def create_full_chain(retriever, openai_api_key=None, chat_memory=ChatMessageHistory()):
-    model = get_model("ChatGPT", openai_api_key=openai_api_key)
+    model = get_model("OpenAI", openai_api_key=openai_api_key)
     system_prompt = """You are a helpful AI assistant for busy professionals trying to improve their health.
     Use the following context and the users' chat history to help the user:
     If you don't know the answer, just say that you don't know. 
@@ -43,23 +43,6 @@ def ask_question(chain, query):
 
 def main():
     load_dotenv()
-
-    from rich.console import Console
-    from rich.markdown import Markdown
-    console = Console()
-
-    docs = load_txt_files()
-    ensemble_retriever = ensemble_retriever_from_docs(docs)
-    chain = create_full_chain(ensemble_retriever)
-
-    queries = [
-        "Generate a grocery list for my family meal plan for the next week(following 7 days). Prefer local, in-season ingredients."
-        "Create a list of estimated calorie counts and grams of carbohydrates for each meal."
-    ]
-
-    for query in queries:
-        response = ask_question(chain, query)
-        console.print(Markdown(response.content))
 
 
 if __name__ == '__main__':

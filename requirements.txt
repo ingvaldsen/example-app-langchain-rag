@@ -52,3 +52,6 @@ unstructured.pytesseract==0.3.12
 watchdog
 watchfiles
 wikipedia
+streamlit_feedback
+qdrant_client==1.8.2
+ragatouille==0.0.8.post2
