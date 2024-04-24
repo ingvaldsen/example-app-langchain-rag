@@ -41,12 +41,12 @@ def show_ui(qa, prompt_to_user="Hvordan kan jeg hjelpe deg?"):
 
 
 @st.cache_resource
-def get_retriever():
+def get_retriever(qdrant_api_key=None):
     embeddings = OpenAIEmbeddings(model="text-embedding-3-large", dimensions=1024)
     reranker = RAGPretrainedModel.from_pretrained("colbert-ir/colbertv2.0")
     client = QdrantClient(
         url="https://3d15e88a-6ad1-49db-95b5-dcf7127efc14.europe-west3-0.gcp.cloud.qdrant.io:6333", 
-        api_key="Dvc9lxX9C-ZmVCDdkdFGKDHG47x7x-rkCvTiqL_vhfJ7LJf_ks96ig",
+        api_key=qdrant_api_key,
     )
     doc_store = Qdrant(
         client=client,
@@ -61,8 +61,8 @@ def get_retriever():
     )
 
 
-def get_chain(openai_api_key=None):
-    retriever = get_retriever(openai_api_key=openai_api_key)
+def get_chain(openai_api_key=None, qdrant_api_key=None):
+    retriever = get_retriever(qdrant_api_key=qdrant_api_key)
     chain = create_full_chain(retriever,
                               openai_api_key=openai_api_key,
                               chat_memory=StreamlitChatMessageHistory(key="langchain_messages"))
@@ -87,9 +87,9 @@ def run():
     ready = True
 
     openai_api_key = st.secrets["OPENAI_API_KEY"]
-
+    qdrant_api_key = st.secrets["QDRANT_API_KEY"]
     if ready:
-        chain = get_chain(openai_api_key=openai_api_key)
+        chain = get_chain(openai_api_key=openai_api_key, qdrant_api_key=qdrant_api_key)
         st.subheader("Spør meg om helserelaterte spørsmål")
         show_ui(chain, "Hva vil du vite?")
     else:
